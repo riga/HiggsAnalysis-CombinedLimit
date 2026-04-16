@@ -568,7 +568,10 @@ RooArgList * CMSHistSum::setupBinPars(double poissonThreshold) {
         //    v_p < 0     e_p > 0        : for now, skip but technically we should be able to handle this in the future
         //    v_p >= 0    e_p > v_p      : Create an additive gaussian constraint for this bin
         //    v_p > 0     0 < e_p <= v_p : do the poisson
-        if (e_p <= 0.) {
+        if (vfuncstmp_[i]->attributes().count("skipForAutoMCStats")) {
+          std::cout << TString::Format("      %-30s\n", "=> Skipped for autoMCStats, ignore");
+          bintypes_[j][i] = 4;
+        } else if (e_p <= 0.) {
           std::cout << TString::Format("      %-30s\n", "=> Error is zero, ignore");
           bintypes_[j][i] = 4;
         } else if (v_p < 0. && e_p > 0.) {

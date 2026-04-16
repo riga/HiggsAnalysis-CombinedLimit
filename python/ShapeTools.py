@@ -176,8 +176,12 @@ class ShapeBuilder(ModelBuilder):
                 pdf.setStringAttribute("combine.process", p)
                 pdf.setStringAttribute("combine.channel", b)
                 pdf.setAttribute("combine.signal", self.DC.isSignal[p])
-                if channelBinParFlag and self.DC.isSignal[p] and not self.DC.binParFlags[b][1]:
-                    pdf.setAttribute("skipForErrorSum")
+                if channelBinParFlag:
+                    if self.DC.isSignal[p] and not self.DC.binParFlags[b][1]:
+                        pdf.setAttribute("skipForErrorSum")
+                    elif p.endswith("_datadriven"):
+                        pdf.setAttribute("skipForErrorSum")
+                        pdf.setAttribute("skipForAutoMCStats")
                 coeff.setStringAttribute("combine.process", p)
                 coeff.setStringAttribute("combine.channel", b)
                 coeff.setAttribute("combine.signal", self.DC.isSignal[p])
